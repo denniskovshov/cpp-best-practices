@@ -1,4 +1,12 @@
-TODO: table of contents
+Roadmap:
+- [ ] clarify undefined behavior
+- [ ] how to avoid undefined behavior
+- [ ] segmentation fault
+- [ ] how to avoid seg fault
+- [ ] other fancy words?
+- [ ] minimum compilation `make` and `cmake` for both gcc and clang
+- [ ] ...
+- [ ] table of contents
 
 C++ Best Practices
 ==================
@@ -19,21 +27,31 @@ Other notable resources are:
 - [ISO standard](https://isocpp.org) - I recommend checking out [Get Started](https://isocpp.org/get-started), [Tour](https://isocpp.org/tour) and [FAQ](https://isocpp.org/faq)
 - [cplusplus.com](https://cplusplus.com) - another website with reference and tutorials
 
-## Common issues
-
-### Undefined behavior
+## Undefined behavior
 *This is a nuanced topic. This section will be a work in progress for some time.*
 
 How come a language can have an undefined behavior (let's shorten to UB)?
 
-C++ has an ISO standard but certain behaviors are not defined in the standard and so compilers decide how to behave in that case.
+C++ has an ISO standard which defines types of compiler freedom. One of the types is called 'undefined behavior' where compilers given freedom decide how to behave.
 
-UB should be avoided since it causes an incorrect program and happens at run-time, not compile time (for this reason Clang provides [UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html)).
+UB should be avoided since it is not guaranteed to work and may (may not!) fail at run-time (not compile-time!).
+For this reason Clang provides [UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html) and gcc has -fsanitize=undefined(?).
 
-#### Null pointer dereferencing
-TODO
+TODO: some of these examples cause `Segmentation fault` (which is not UB?) so they will be moved to a new section.
 
-#### Learn more
-- https://en.cppreference.com/w/cpp/language/ub
+Examples of undefined behavior:
+- Simple (expected) cases:
+    - `NULL` or `nullptr` pointer dereference, or accessing pointer after calling `delete` or `free`
+    - Division by zero, or INT32_MIN divided by -1 (see signed integer overflow)
+        - since INT32_MAX is 2147483647 and INT32_MIN is -2147483648 so division by -1 will result in overflow
+    - Accessing array or memory out of bounds
+- More nuanced cases:
+    - Use of an uninitialized variables. Very common. Yes, in C++ you should initilize variables.
+    - Signed integer overflow is undefined. Unsigned integer is defined to wrap around.
+    - Modifying same variable more than once in an expression
+- TBD
+
+### How to avoid undefined behavior?
+TODO: "Be very careful, use good tools, and hope for the best." John Regehr
 
 *to be continued...*
