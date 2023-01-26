@@ -1,3 +1,6 @@
+Or simply ask ChatGPT...
+
+
 Roadmap:
 - [ ] cover below topics shortly for now, then go deeper into each as time permits
 - [ ] clarify undefined behavior
